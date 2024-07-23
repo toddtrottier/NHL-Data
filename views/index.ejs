@@ -8,6 +8,27 @@
 </head>
 
 <body>
-    <h1>Select a team to view their schedule</h1>
+    <div class="title">
+        <h1>Select a team to view their schedule</h1>
+    </div>
+    <div class="grid-container">
+        <%# create a clickable image for each of the 32 NHL teams %>
+        <% if (locals.abvAndLogo) { %>
+            <% abvAndLogo.forEach(team => { %>
+                <div class="grid-item">
+                    <a href="schedule.ejs">
+                            <img src="<%= team.url %>" alt="NHL Team Logo">
+                    </a>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="grid-item">
+                    <a href="schedule.ejs">
+                        <img src="/images/NHL-Logo.png" alt="NHL Team Logo">
+                    </a>
+            </div>
+        <% } %>
+    
+    </div>
 </body>
 </html>
