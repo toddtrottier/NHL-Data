@@ -38,6 +38,15 @@ app.get("/", async (req, res) => {
     }
 })
 
+app.post("/schedule", async (req, res) => {
+    console.log("Request body - " + req.body);
+    res.redirect("index.ejs");
+});
+
+
+
+
+
 app.listen(port, () => {
     console.log('Server listening on ' + port);
 });
