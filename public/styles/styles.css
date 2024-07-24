@@ -1,17 +1,33 @@
 body{
-    background-color: rgba(250, 22, 34, 0.7);
+    background-color: rgba(39, 38, 38, 0.7);
+    font-family: 'Poppins', sans-serif;
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    color: azure;
+    font-size: 1.5em;
 }
 
 .grid-container{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+    padding-bottom: 100px;
 }
 
 .grid-item{
     display: flex;
     align-items: center;
-    align-content: center;
+    justify-content: center;
+}
+
+.grid-item button {
+    background-color: transparent;
+    border: none;
 }
 
 .grid-item img {

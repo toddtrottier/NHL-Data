@@ -27,7 +27,7 @@ app.get("/", async (req, res) => {
                 //if team is in active teams array, create a new obj for that team with logo Url and add it to updatedTeamArray
                 var teamLogos = teamArray[i].teams[0].logos;
                 var teamLogoURL = teamLogos[teamLogos.length - 1].secureUrl;
-                updatedTeamArray.push({team: teamAbv, url: teamLogoURL});
+                updatedTeamArray.push({abv: teamAbv, url: teamLogoURL});
             }
         }
         console.log("Logos have been populated");
@@ -38,9 +38,10 @@ app.get("/", async (req, res) => {
     }
 })
 
-app.post("/schedule", async (req, res) => {
-    console.log("Request body - " + req.body);
-    res.redirect("index.ejs");
+app.post("/schedule", (req, res) => {
+    console.log(req.body);
+    const chosenTeam = req.body.choice;
+    res.render("schedule.ejs");
 });
 
 
