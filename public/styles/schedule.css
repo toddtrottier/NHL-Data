@@ -1,0 +1,23 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 300px;
+    padding-bottom: 75px;
+}
+
+form {
+    width: 40%;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+}
+
+.table{
+    width: 60%;
+}
+thead {
+    height: 75px;
+}
