@@ -10,6 +10,7 @@
   "author": "Todd Trottier",
   "license": "ISC",
   "dependencies": {
+    "alert": "^6.0.2",
     "axios": "^1.7.2",
     "body-parser": "^1.20.2",
     "ejs": "^3.1.10",

@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
+// import alert from "alert";
 
 const app = express();
 const port = 3000;
@@ -32,7 +33,6 @@ app.get("/", async (req, res) => {
                 updatedTeamArray.push({abv: teamAbv, url: teamLogoURL});
             }
         }
-        console.log("Logos have been populated");
         res.render("index.ejs", {abvAndLogo: updatedTeamArray});
     } catch (e){
         console.error("Failed to retrive team logos: ", e.message);
@@ -56,6 +56,55 @@ app.post("/schedule", async (req, res) => {
         const result = await axios.get(scheduleAPI + chosenTeam + "/month/" + year + "-" + currentMonth);
         const games = result.data.games; //returns array of each game for the selected month
 
+        res.render("schedule.ejs", {games: games});
+    } catch (error) {
+        console.error("Failed to return team schedule: " + error.message);
+        res.render("index.ejs");
+    }
+});
+
+app.post("/month", async (req, res) => {
+    var chosenMonth = req.body.month;
+    console.log("Chosen Month - " + chosenMonth);
+    const date = new Date();
+    var year = date.getFullYear();
+    const currentMonth = date.getMonth() + 1;
+
+
+    //checking to see if the current month is after June. If yes, when user selects Jan-June, the year needs to be advanced by 1 year
+    if (currentMonth > 6) {
+        //its after june meaning we need to add 1 to the year if the chosen month is Jan-June
+        if (chosenMonth > 0 && chosenMonth < 7) {
+            year = year + 1;
+        }
+    }
+    console.log("Year - " + year);
+
+    //checking to see if the chosen month falls during off season or playoffs
+    if (chosenMonth > 6 && chosenMonth < 10) {
+        //off season. return october as month
+        chosenMonth = 10;
+        console.log("chosen month is in the off season. New month value = " + chosenMonth);
+    } else if (chosenMonth > 4 && chosenMonth < 7) {
+        //its playoffs, check to see if playoff schedule is available yet
+        try {
+            var result = await axios.get(scheduleAPI + chosenTeam + "/month/" + year + "-" + chosenMonth);
+        } catch (error) {
+            console.error("Error because playoff schedule has not been released yet: " + error.message);
+            const playoffError = "The " + year + " playoff schedule has not been released yet."
+            res.render("schedule.ejs", {playoffMessage: playoffError});
+        }
+    }
+
+
+    try {
+        if (chosenMonth > 0 && chosenMonth < 10){
+            //add a 0 before the month in the api request
+            var result = await axios.get(scheduleAPI + chosenTeam + "/month/" + year + "-0" + chosenMonth);
+        } else {
+            var result = await axios.get(scheduleAPI + chosenTeam + "/month/" + year + "-" + chosenMonth);
+        }
+        const games = result.data.games; //returns array of games for the selected month
         res.render("schedule.ejs", {games: games});
     } catch (error) {
         console.error("Failed to return team schedule: " + error.message);
